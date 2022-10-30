@@ -68,7 +68,7 @@ def test_biased_model():
     clf = svm.SVC()
     clf.fit(x_train, y_train)
     y_pred = clf.predict(x_dev)
-    print(f"test_val :{(np.unique(np.array(y_pred))).shape[0]} ")
+    print(f"test_val :{(np.unique(np.array(y_pred)))} ")
     assert (np.unique(np.array(y_pred))).shape[0] == 1
 
 
