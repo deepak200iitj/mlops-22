@@ -1,0 +1,4 @@
+test accuracy :0.9645451212
+
+
+model saved at models/svm_gamma=0.001_C=0.7.joblib

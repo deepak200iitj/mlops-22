@@ -5,8 +5,21 @@ from joblib import load
 
 sys.path.append(".")
 
-from utils import get_all_h_param_comb, tune_and_save
+from utils import get_all_h_param_comb, tune_and_save, train_dev_test_same_split, train_dev_test_different_split
 from sklearn import svm, metrics
+from sklearn import datasets, svm, metrics
+from sklearn.model_selection import train_test_split
+import numpy as np
+train_frac = 0.8
+test_frac = 0.1
+dev_frac = 0.1
+
+#PART: load dataset -- data from csv, tsv, jsonl, pickle
+digits = datasets.load_digits()
+n_samples = len(digits.images)
+dev_test_frac = 1-train_frac
+data = digits.images.reshape((n_samples, -1))
+label = digits.target
 
 # test case to check if all the combinations of the hyper parameters are indeed getting created
 def test_get_h_param_comb():
@@ -90,6 +103,17 @@ def test_predicts_all():
     predicted = best_model.predict(x_test)
 
     assert set(predicted) == set(y_test)
+
+
+def test_random_state():
+    x_train, y_train, x_dev, y_dev, x_test, y_test=train_dev_test_same_split(data, label, train_frac, dev_frac)
+    x_train2, y_train2, x_dev2, y_dev2, x_test2, y_test2=train_dev_test_same_split(data, label, train_frac, dev_frac)
+    x_train3, y_train3, x_dev3, y_dev3, x_test3, y_test3=train_dev_test_same_split(data, label, train_frac, dev_frac)
+    assert np.all(x_test == x_test2)  # same array
+    #assert x_test != x_test3  #different array
+    
+
+
 
 
 # what more test cases should be there
